@@ -13,6 +13,9 @@ $routes->group('admin-panel', ['namespace' => 'App\Controllers\Admin'], function
 
     $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
 
+    $routes->get('settings', 'SettingsController::index', ['filter' => 'auth']);
+    $routes->post('settings/save', 'SettingsController::save', ['filter' => 'auth']);
+
     $routes->get('pages', 'PagesController::index', ['filter' => 'auth']);
     $routes->get('pages/create', 'PagesController::create', ['filter' => 'auth']);
     $routes->post('pages/store', 'PagesController::store', ['filter' => 'auth']);
