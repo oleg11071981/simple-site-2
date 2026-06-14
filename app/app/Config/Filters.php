@@ -4,32 +4,43 @@ namespace Config;
 
 use App\Filters\AuthFilter;
 use App\Filters\LoginThrottleFilter;
-use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
+use CodeIgniter\Filters\ForceHTTPS;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
+use CodeIgniter\Filters\PageCache;
+use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
-class Filters extends BaseConfig
+class Filters extends BaseFilters
 {
-    /**
-     * @var array<string, class-string|list<class-string>> [filter_name => classname]
-     *                                                     or [filter_name => [classname1, classname2, ...]]
-     */
     public array $aliases = [
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'forcehttps'    => ForceHTTPS::class,
+        'pagecache'     => PageCache::class,
+        'performance'   => PerformanceMetrics::class,
         'auth'          => AuthFilter::class,
         'loginThrottle' => LoginThrottleFilter::class,
     ];
 
-    /**
-     * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
-     */
+    public array $required = [
+        'before' => [
+            'forcehttps',
+            'pagecache',
+        ],
+        'after' => [
+            'pagecache',
+            'performance',
+            'toolbar',
+        ],
+    ];
+
     public array $globals = [
         'before' => [
             'csrf' => [
@@ -42,24 +53,32 @@ class Filters extends BaseConfig
         'after' => [],
     ];
 
-    /**
-     * @var array<string, list<string>>
-     */
     public array $methods = [];
 
-    /**
-     * @var array<string, array<string, list<string>>>
-     */
     public array $filters = [];
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->globals['after'] = match (ENVIRONMENT) {
-            'development' => ['toolbar'],
-            'production'  => ['secureheaders'],
-            default       => [],
-        };
+        if (ENVIRONMENT === 'development') {
+            $this->required['before'] = array_values(array_filter(
+                $this->required['before'],
+                static fn (string $filter): bool => $filter !== 'forcehttps',
+            ));
+        }
+
+        if (ENVIRONMENT === 'production') {
+            $this->required['after'] = array_values(array_filter(
+                $this->required['after'],
+                static fn (string $filter): bool => $filter !== 'toolbar',
+            ));
+            $this->globals['after'] = ['secureheaders'];
+        } elseif (ENVIRONMENT !== 'development') {
+            $this->required['after'] = array_values(array_filter(
+                $this->required['after'],
+                static fn (string $filter): bool => $filter !== 'toolbar',
+            ));
+        }
     }
 }
