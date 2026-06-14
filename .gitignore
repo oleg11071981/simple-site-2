@@ -38,31 +38,36 @@ Vagrantfile
 #-------------------------
 # CodeIgniter Specific
 #-------------------------
-writable/cache/*
-!writable/cache/.gitkeep
+app/writable/cache/*
+!app/writable/cache/index.html
 
-writable/logs/*
-!writable/logs/.gitkeep
+app/writable/logs/*
+!app/writable/logs/index.html
 
-writable/session/*
-!writable/session/.gitkeep
+app/writable/session/*
+!app/writable/session/index.html
 
-writable/uploads/*
-!writable/uploads/.gitkeep
+app/writable/uploads/*
+!app/writable/uploads/index.html
 
-writable/debugbar/*
-!writable/debugbar/.gitkeep
+app/writable/debugbar/*
+!app/writable/debugbar/.gitkeep
 
 php_errors.log
 
 #-------------------------
 # Uploads
 #-------------------------
-public/uploads/temp/*
-!public/uploads/temp/.gitkeep
+app/public/uploads/*
+!app/public/uploads/.gitkeep
+!app/public/uploads/temp/.gitkeep
+!app/public/uploads/ckeditor/.gitkeep
 
-public/uploads/ckeditor/*
-!public/uploads/ckeditor/.gitkeep
+app/public/uploads/temp/*
+!app/public/uploads/temp/.gitkeep
+
+app/public/uploads/ckeditor/*
+!app/public/uploads/ckeditor/.gitkeep
 
 #-------------------------
 # Composer
@@ -75,7 +80,7 @@ composer.phar
 # Docker
 #-------------------------
 databases/mysql/
-logs/
+/logs/
 *.pid
 docker-compose.override.yml
 
@@ -151,5 +156,5 @@ databases/mysql/mysql.sock
 databases/mysql/performance_schema/
 databases/mysql/sys/
 
-# Logs
-logs/*.log
+# Logs (только корневая папка docker/nginx)
+/logs/*.log
