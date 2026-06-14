@@ -352,7 +352,121 @@ main > .container {
 .page-text {
   color: #334155;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+/* Типографика HTML-контента из CMS (CKEditor) */
+.page-text p,
+.appeal-card p,
+.appeal-notice p {
+  margin: 0 0 1em;
+}
+
+.page-text p:last-child,
+.appeal-card p:last-child,
+.appeal-notice p:last-child {
+  margin-bottom: 0;
+}
+
+.page-text ul:not(.appeal-list),
+.page-text ol,
+.appeal-card ul:not(.appeal-list),
+.appeal-card ol,
+.appeal-notice ul,
+.appeal-notice ol {
+  margin: 0 0 1em;
+  padding-left: 1.75em;
+}
+
+.page-text ul:not(.appeal-list),
+.appeal-card ul:not(.appeal-list),
+.appeal-notice ul {
+  list-style-type: disc;
+}
+
+.page-text ol,
+.appeal-card ol,
+.appeal-notice ol {
+  list-style-type: decimal;
+}
+
+.page-text ul:not(.appeal-list) ul,
+.appeal-card ul:not(.appeal-list) ul,
+.appeal-notice ul ul {
+  list-style-type: circle;
+  margin-top: 0.35em;
+}
+
+.page-text ul:not(.appeal-list) ol,
+.page-text ol ul,
+.appeal-card ul:not(.appeal-list) ol,
+.appeal-card ol ul,
+.appeal-notice ul ol,
+.appeal-notice ol ul {
+  margin-top: 0.35em;
+}
+
+.page-text li,
+.appeal-card ul:not(.appeal-list) li,
+.appeal-card ol li,
+.appeal-notice li {
+  margin-bottom: 0.35em;
+}
+
+.page-text li:last-child,
+.appeal-card ul:not(.appeal-list) li:last-child,
+.appeal-card ol li:last-child,
+.appeal-notice li:last-child {
+  margin-bottom: 0;
+}
+
+.page-text h1,
+.page-text h2,
+.page-text h3,
+.page-text h4,
+.appeal-card h1,
+.appeal-card h2,
+.appeal-card h3,
+.appeal-card h4,
+.appeal-notice h1,
+.appeal-notice h2,
+.appeal-notice h3,
+.appeal-notice h4 {
+  color: #0f172a;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1.25em 0 0.5em;
+}
+
+.page-text > :first-child,
+.appeal-card > :first-child,
+.appeal-notice > :first-child {
+  margin-top: 0;
+}
+
+.page-text h1,
+.appeal-card h1,
+.appeal-notice h1 { font-size: 1.75rem; }
+
+.page-text h2,
+.appeal-card h2:not(.appeal-title),
+.appeal-notice h2 { font-size: 1.4rem; }
+
+.page-text h3,
+.appeal-card h3,
+.appeal-notice h3 { font-size: 1.2rem; }
+
+.page-text h4,
+.appeal-card h4,
+.appeal-notice h4 { font-size: 1.05rem; }
+
+.page-text blockquote,
+.appeal-card blockquote,
+.appeal-notice blockquote {
+  margin: 0 0 1em;
+  padding: 0.75em 1em;
+  border-left: 4px solid #f90;
+  background: #fff8e7;
 }
 
 .page-text img {
