@@ -26,8 +26,7 @@ class NFileManagerModel extends Model
     protected $allowedFields = [
         'file_name', 'file_type', 'mime_type', 'name', 'category',
         'width', 'height', 'file_size', 'thumb_width', 'thumb_height',
-        'thumb_file_size', 'foto', 'cnt', 'title', 'priority',
-        'title_en',  // ← Добавить поле для английской подписи
+        'thumb_file_size', 'foto', 'cnt',         'title', 'priority',
         'create', 'modify', 'create_by_user', 'modify_by_user'
     ];
 

@@ -32,7 +32,6 @@ class NSiteModel extends Model
         'show_in_menu', 'priority', 'new_on_site', 'parent',
         'media',
         'create', 'modify', 'create_by_user', 'modify_by_user',
-        'name_en', 'more_info_en', 'anons_text_en', 'keywords_en', 'description_en'
     ];
 
     protected $useTimestamps = false;
@@ -168,31 +167,10 @@ class NSiteModel extends Model
         return $path;
     }
 
-    /**
-     * Получить страницу по пути с учетом языка
-     * @param string $path
-     * @param string $lang
-     * @return array|null
-     */
-    public function getByPathWithLang(string $path, string $lang = 'ru'): ?array
+    public function getByPath(string $path): ?array
     {
-        $page = $this->where('path', $path)
+        return $this->where('path', $path)
             ->where('publish', 1)
             ->first();
-
-        if (!$page) {
-            return null;
-        }
-
-        if ($lang === 'en') {
-            $page['name'] = $page['name_en'] ?? $page['name'];
-            $page['more_info'] = $page['more_info_en'] ?? $page['more_info'];
-            $page['anons_text'] = $page['anons_text_en'] ?? $page['anons_text'];
-            $page['keywords'] = $page['keywords_en'] ?? $page['keywords'];
-            $page['description'] = $page['description_en'] ?? $page['description'];
-        }
-
-        return $page;
     }
-
 }

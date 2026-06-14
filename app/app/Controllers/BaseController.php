@@ -37,7 +37,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = ['url', 'form', 'common', 'language'];
+    protected $helpers = ['url', 'form', 'common'];
 
     /**
      * Контактные данные для футера
@@ -45,13 +45,6 @@ abstract class BaseController extends Controller
      * @var array
      */
     protected array $contacts;
-
-    /**
-     * Текущий язык сайта
-     *
-     * @var string
-     */
-    protected string $currentLang;
 
     /**
      * Модель настроек сайта
@@ -92,7 +85,5 @@ abstract class BaseController extends Controller
             'address' => $this->settingsModel->get('Adress', ''),
         ];
 
-        // Устанавливаем текущий язык
-        $this->currentLang = get_lang();
     }
 }

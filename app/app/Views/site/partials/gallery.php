@@ -1,57 +1,36 @@
 <?php if (!empty($files)): ?>
-    <div class="gallery-section">
-        <h2 class="gallery-title"><?= ($currentLang ?? 'ru') === 'en' ? 'Gallery' : 'Галерея' ?></h2>
-
-        <!-- Swiper слайдер -->
-        <div class="swiper gallery-swiper">
-            <div class="swiper-wrapper">
-                <?php foreach ($files as $file): ?>
-                    <?php
-                    // Определяем подпись с учетом языка
-                    if (($currentLang ?? 'ru') === 'en') {
-                        // Английская версия: title_en, если нет - title, если нет - name
-                        $caption = !empty($file['title_en']) ? $file['title_en'] : (!empty($file['title']) ? $file['title'] : $file['name']);
-                    } else {
-                        // Русская версия: title, если нет - name
-                        $caption = !empty($file['title']) ? $file['title'] : $file['name'];
-                    }
-                    ?>
-                    <div class="swiper-slide gallery-slide">
-                        <?php if (in_array($file['file_type'], ['jpg', 'jpeg', 'png', 'gif', 'webp'])): ?>
-                            <a href="/uploads/<?= esc($file['file_name']) ?>"
-                               class="gallery-link bigfoto"
-                               data-fancybox="gallery"
-                               data-caption="<?= esc($caption) ?>">
-                                <img src="/uploads/<?= esc($file['file_name']) ?>"
-                                     alt="<?= esc($caption) ?>">
-                            </a>
-                        <?php else: ?>
-                            <div class="gallery-file">
-                                <div class="file-icon">
-                                    <?php
-                                    $icons = [
-                                        'pdf' => '📄', 'doc' => '📝', 'docx' => '📝',
-                                        'xls' => '📊', 'xlsx' => '📊', 'zip' => '📦',
-                                        'rar' => '📦', 'txt' => '📃', 'default' => '📁'
-                                    ];
-                                    echo $icons[$file['file_type']] ?? $icons['default'];
-                                    ?>
-                                </div>
-                                <a href="/uploads/<?= esc($file['file_name']) ?>"
-                                   class="download-link"
-                                   download
-                                   title="<?= ($currentLang ?? 'ru') === 'en' ? 'Download file' : 'Скачать файл' ?>">
-                                    <?= ($currentLang ?? 'ru') === 'en' ? 'Download' : 'Скачать' ?>
-                                </a>
-                            </div>
+    <section class="gallery-section">
+        <h2 class="gallery-title">Галерея</h2>
+        <div class="gallery-grid">
+            <?php foreach ($files as $file): ?>
+                <?php
+                $isImage = in_array(strtolower($file['file_type']), ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                $caption = !empty($file['title']) ? $file['title'] : $file['name'];
+                ?>
+                <div class="gallery-item">
+                    <?php if ($isImage): ?>
+                        <a href="/uploads/<?= esc($file['file_name']) ?>"
+                           data-fancybox="gallery"
+                           data-caption="<?= esc($caption) ?>">
+                            <img src="/uploads/<?= esc($file['file_name']) ?>" alt="<?= esc($caption) ?>">
+                        </a>
+                        <?php if ($caption): ?>
+                            <div class="gallery-caption"><?= esc($caption) ?></div>
                         <?php endif; ?>
-                        <div class="gallery-caption"><?= esc($caption) ?></div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+                    <?php else: ?>
+                        <div class="gallery-file">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name"><?= esc($file['name']) ?></span>
+                            <a href="/uploads/<?= esc($file['file_name']) ?>"
+                               class="file-download"
+                               download
+                               title="Скачать файл">
+                                Скачать
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
-    </div>
+    </section>
 <?php endif; ?>
