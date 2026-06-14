@@ -72,8 +72,7 @@ app/public/uploads/ckeditor/*
 #-------------------------
 # Composer
 #-------------------------
-vendor/
-composer.lock
+app/vendor/
 composer.phar
 
 #-------------------------
@@ -143,7 +142,16 @@ template/
 *.cache
 *.sqlite
 *.sqlite-journal
-.env.example
+
+# SSL certificates (generate on server)
+certs/*
+!certs/.gitkeep
+
+# Production env for Docker Compose
+.env.prod
+
+# Backups
+backups/
 
 #-------------------------
 # Database files (не храним в Git)

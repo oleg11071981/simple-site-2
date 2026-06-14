@@ -8,7 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->group('admin-panel', ['namespace' => 'App\Controllers\Admin'], function ($routes) {
     $routes->get('login', 'AuthController::login');
-    $routes->post('auth/authenticate', 'AuthController::authenticate');
+    $routes->post('auth/authenticate', 'AuthController::authenticate', ['filter' => 'loginThrottle']);
     $routes->get('logout', 'AuthController::logout');
 
     $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);

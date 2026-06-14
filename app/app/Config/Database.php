@@ -79,11 +79,12 @@ class Database extends Config
     {
         parent::__construct();
 
-        // Ensure that we always set the database group to 'tests' if
-        // we are currently running an automated test suite, so that
-        // we don't overwrite live data on accident.
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
+        }
+
+        if (ENVIRONMENT === 'production') {
+            $this->default['DBDebug'] = false;
         }
     }
 }
