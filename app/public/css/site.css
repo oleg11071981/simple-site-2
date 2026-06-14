@@ -474,9 +474,20 @@ main > .container {
   height: auto;
 }
 
-.page-text a {
+.page-text a,
+.appeal-card a,
+.appeal-notice a,
+.info-card a {
   color: #f90;
   text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.page-text a:hover,
+.appeal-card a:hover,
+.appeal-notice a:hover,
+.info-card a:hover {
+  opacity: 0.85;
 }
 
 /* ========== СЕТКА ДОКУМЕНТОВ ========== */
