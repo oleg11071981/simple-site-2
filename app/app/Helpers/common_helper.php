@@ -29,3 +29,39 @@ if (!function_exists('declension')) {
         return $many;
     }
 }
+
+if (!function_exists('format_file_size')) {
+    function format_file_size(int $bytes): string
+    {
+        if ($bytes < 1024) {
+            return $bytes . ' Б';
+        }
+        if ($bytes < 1048576) {
+            return round($bytes / 1024, 1) . ' КБ';
+        }
+        if ($bytes < 1073741824) {
+            return round($bytes / 1048576, 1) . ' МБ';
+        }
+        return round($bytes / 1073741824, 1) . ' ГБ';
+    }
+}
+
+if (!function_exists('doc_file_icon')) {
+    function doc_file_icon(string $fileType): string
+    {
+        $type = strtolower($fileType);
+        if (in_array($type, ['jpg', 'jpeg', 'png', 'gif', 'webp'], true)) {
+            return '🖼️';
+        }
+        if (in_array($type, ['pdf'], true)) {
+            return '📕';
+        }
+        if (in_array($type, ['doc', 'docx'], true)) {
+            return '📝';
+        }
+        if (in_array($type, ['xls', 'xlsx'], true)) {
+            return '📊';
+        }
+        return '📄';
+    }
+}

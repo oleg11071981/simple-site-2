@@ -12,22 +12,29 @@ class SiteController extends BaseController
     {
         $settings = $this->settingsModel->getAll();
 
-        $data = [
+        $sections = [];
+        foreach ($this->pagesModel->getMenuPages(0) as $section) {
+            $section['full_path'] = $this->pagesModel->getFullPath($section['id']);
+            $children = $this->pagesModel->getMenuPages($section['id']);
+            foreach ($children as &$child) {
+                $child['full_path'] = $this->pagesModel->getFullPath($child['id']);
+            }
+            unset($child);
+            $section['children'] = $children;
+            $sections[] = $section;
+        }
+
+        return view('site/index', [
             'title'       => $settings['SiteName'] ?? 'n-cms',
             'description' => $settings['Description'] ?? '',
             'keywords'    => $settings['Keywords'] ?? '',
             'siteName'    => $settings['SiteName'] ?? 'n-cms',
             'slogan'      => $settings['Slogan'] ?? '',
             'mainText'    => $settings['MainText'] ?? '',
+            'sections'    => $sections,
             'menuPages'   => $this->pagesModel->getMenuPages(),
             'activePage'  => 'home',
-            'currentPage' => '',
-            'email'       => $this->contacts['email'],
-            'phone'       => $this->contacts['phone'],
-            'address'     => $this->contacts['address'],
-        ];
-
-        return view('site/index', $data);
+        ]);
     }
 
     public function page(...$segments)
@@ -47,30 +54,33 @@ class SiteController extends BaseController
         }
 
         $settings = $this->settingsModel->getAll();
-
         $galleryFiles = [];
+
         if ($page['media'] > 0) {
             $fileModel = new NFileManagerModel();
             $galleryFiles = $fileModel->getFilesByCategory($page['media']);
+            foreach ($galleryFiles as &$file) {
+                $file['size_formatted'] = format_file_size((int) ($file['file_size'] ?? 0));
+                $file['display_name'] = !empty($file['title']) ? $file['title'] : $file['name'];
+            }
+            unset($file);
         }
 
-        $data = [
+        $childrenTree = $this->pagesModel->getTreeForDisplay($page['id']);
+
+        return view('site/page', [
             'title'        => $page['name'] . ' | ' . ($settings['SiteName'] ?? 'n-cms'),
             'description'  => $page['description'] ?: ($settings['Description'] ?? ''),
             'keywords'     => $page['keywords'] ?: ($settings['Keywords'] ?? ''),
             'page'         => $page,
-            'childrenTree' => $this->pagesModel->getTreeForDisplay($page['id']),
+            'childrenTree' => $childrenTree,
             'breadcrumbs'  => $this->getBreadcrumbs($page['id']),
             'galleryFiles' => $galleryFiles,
+            'enableSearch' => !empty($galleryFiles),
             'menuPages'    => $this->pagesModel->getMenuPages(),
             'activePage'   => 'page_' . $page['id'],
-            'currentPage'  => $page['name'],
-            'email'        => $this->contacts['email'],
-            'phone'        => $this->contacts['phone'],
-            'address'      => $this->contacts['address'],
-        ];
-
-        return view('site/page', $data);
+            'siteName'     => $settings['SiteName'] ?? 'n-cms',
+        ]);
     }
 
     private function getBreadcrumbs(int $id): array
@@ -98,7 +108,7 @@ class SiteController extends BaseController
         $settings = $this->settingsModel->getAll();
         $siteName = $settings['SiteName'] ?? 'n-cms';
 
-        $data = [
+        return view('site/contacts', [
             'title'             => 'Контакты | ' . $siteName,
             'description'       => 'Контактная информация',
             'keywords'          => 'контакты, адрес, телефон, email',
@@ -109,12 +119,8 @@ class SiteController extends BaseController
             'address'           => $this->contacts['address'],
             'workSchedule'      => $settings['WorkSchedule'] ?? '',
             'additional_field1' => $settings['additional_field1'] ?? '',
-            'additional_field2' => $settings['additional_field2'] ?? '',
             'menuPages'         => $this->pagesModel->getMenuPages(),
             'activePage'        => 'contacts',
-            'currentPage'       => 'Контакты',
-        ];
-
-        return view('site/contacts', $data);
+        ]);
     }
 }

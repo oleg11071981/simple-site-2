@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title><?= $title ?? 'Демо' ?></title>
+    <title><?= esc($title ?? 'Сайт') ?></title>
     <?php if (!empty($description)): ?>
         <meta name="description" content="<?= esc($description) ?>">
     <?php endif; ?>
@@ -12,55 +12,34 @@
     <?php endif; ?>
 
     <?php
-    // Cache busting: версия = время изменения файла
     $cssVersion = filemtime(FCPATH . 'css/site.css');
     $jsVersion = filemtime(FCPATH . 'js/site.js');
     ?>
 
     <link rel="stylesheet" href="/css/site.css?v=<?= $cssVersion ?>">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<?= view('site/partials/header', ['menuPages' => $menuPages ?? [], 'activePage' => $activePage ?? '']) ?>
+<?= view('site/partials/header', [
+    'menuPages'  => $menuPages ?? [],
+    'activePage' => $activePage ?? '',
+    'siteName'   => $siteName ?? null,
+]) ?>
 
 <main>
-    <div class="container">
-        <!-- Хлебные крошки -->
-        <?php if (isset($currentPage) && !empty($currentPage)): ?>
-            <nav class="breadcrumbs" aria-label="Хлебные крошки">
-                <ul class="breadcrumbs-list">
-                    <li class="breadcrumbs-item">
-                        <a href="/" class="breadcrumbs-link">Главная</a>
-                    </li>
-                    <?php if (!empty($breadcrumbs)): ?>
-                        <?php foreach ($breadcrumbs as $crumb): ?>
-                            <li class="breadcrumbs-item">
-                                <a href="<?= esc($crumb['url']) ?>" class="breadcrumbs-link">
-                                    <?= esc($crumb['name']) ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    <li class="breadcrumbs-item">
-                        <span class="breadcrumbs-current"><?= esc($currentPage) ?></span>
-                    </li>
-                </ul>
-            </nav>
-        <?php endif; ?>
-
-        <?= $this->renderSection('content') ?>
-    </div>
+    <?= $this->renderSection('content') ?>
 </main>
 
-<?= view('site/partials/footer') ?>
+<?= view('site/partials/footer', [
+    'menuPages' => $menuPages ?? [],
+    'siteName'  => $siteName ?? null,
+]) ?>
 
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 <script src="/js/site.js?v=<?= $jsVersion ?>"></script>
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<?php if (!empty($enableSearch)): ?>
+    <?php $searchVersion = filemtime(FCPATH . 'js/search.js'); ?>
+    <script src="/js/search.js?v=<?= $searchVersion ?>"></script>
+<?php endif; ?>
 </body>
 </html>

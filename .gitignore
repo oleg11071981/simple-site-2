@@ -137,6 +137,8 @@ yarn.lock
 #-------------------------
 # Project Specific
 #-------------------------
+template/
+
 *.log
 *.cache
 *.sqlite

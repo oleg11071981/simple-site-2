@@ -2,104 +2,43 @@
 
 <?= $this->section('content') ?>
 
-    <div class="page-header">
-        <h1 class="page-title">Контакты</h1>
-        <p class="page-description">Свяжитесь с нами удобным для вас способом</p>
-    </div>
-
-    <div class="contacts-grid">
-        <div class="contacts-info-card">
-            <h2 class="contacts-info-title">📋 Контактная информация</h2>
-
-            <div class="contacts-info-list">
-                <?php if (!empty($address)): ?>
-                    <div class="contacts-info-item">
-                        <div class="contacts-info-icon">📍</div>
-                        <div class="contacts-info-content">
-                            <div class="contacts-info-label">Адрес:</div>
-                            <div class="contacts-info-value"><?= esc($address) ?></div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (!empty($phone)): ?>
-                    <div class="contacts-info-item">
-                        <div class="contacts-info-icon">📞</div>
-                        <div class="contacts-info-content">
-                            <div class="contacts-info-label">Телефон:</div>
-                            <div class="contacts-info-value"><?= esc($phone) ?></div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (!empty($email)): ?>
-                    <div class="contacts-info-item">
-                        <div class="contacts-info-icon">✉️</div>
-                        <div class="contacts-info-content">
-                            <div class="contacts-info-label">Email:</div>
-                            <div class="contacts-info-value">
-                                <a href="mailto:<?= esc($email) ?>" class="contacts-link"><?= esc($email) ?></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (!empty($adminEmail)): ?>
-                    <div class="contacts-info-item">
-                        <div class="contacts-info-icon">👨‍💼</div>
-                        <div class="contacts-info-content">
-                            <div class="contacts-info-label">Email администратора:</div>
-                            <div class="contacts-info-value">
-                                <a href="mailto:<?= esc($adminEmail) ?>" class="contacts-link"><?= esc($adminEmail) ?></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (!empty($workSchedule)): ?>
-                    <div class="contacts-info-item">
-                        <div class="contacts-info-icon">🕐</div>
-                        <div class="contacts-info-content">
-                            <div class="contacts-info-label">Режим работы:</div>
-                            <div class="contacts-info-value"><?= esc($workSchedule) ?></div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
+<section class="section appeal-section">
+    <div class="container">
+        <div class="breadcrumbs">
+            <a href="/">Главная</a>
+            <span class="separator">/</span>
+            <span class="current">Контакты</span>
         </div>
 
-        <div class="contacts-map-card">
-            <h2 class="contacts-info-title">🗺️ Схема проезда</h2>
+        <h1 class="page-title">Контакты</h1>
+
+        <div class="appeal-card">
+            <h2 class="appeal-title">Контактная информация</h2>
+            <ul class="appeal-list">
+                <?php if (!empty($address)): ?>
+                    <li><strong>Адрес:</strong> <?= esc($address) ?></li>
+                <?php endif; ?>
+                <?php if (!empty($phone)): ?>
+                    <li><strong>Телефон:</strong> <a href="tel:<?= esc($phone) ?>" class="gos-link"><?= esc($phone) ?></a></li>
+                <?php endif; ?>
+                <?php if (!empty($email)): ?>
+                    <li><strong>Email:</strong> <a href="mailto:<?= esc($email) ?>" class="gos-link"><?= esc($email) ?></a></li>
+                <?php endif; ?>
+                <?php if (!empty($adminEmail)): ?>
+                    <li><strong>Email администратора:</strong> <a href="mailto:<?= esc($adminEmail) ?>" class="gos-link"><?= esc($adminEmail) ?></a></li>
+                <?php endif; ?>
+                <?php if (!empty($workSchedule)): ?>
+                    <li><strong>График работы:</strong> <?= esc($workSchedule) ?></li>
+                <?php endif; ?>
+            </ul>
 
             <?php if (!empty($additional_field1)): ?>
-                <div class="map-container">
+                <div class="appeal-notice">
                     <?= $additional_field1 ?>
                 </div>
-            <?php else: ?>
-                <div class="map-container">
-                    <iframe
-                            src="https://yandex.ru/map-widget/v1/?um=constructor%3Ae3b5f8f9a6b5c4d3e2f1a0b9c8d7e6f5&source=constructor"
-                            width="100%"
-                            height="400"
-                            frameborder="0"
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="map-note">
-                    <a href="#" class="map-link" id="openMapLink">Открыть карту в новом окне →</a>
-                </p>
             <?php endif; ?>
         </div>
     </div>
-
-    <script>
-        const openMapLink = document.getElementById('openMapLink');
-        if (openMapLink) {
-            openMapLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.open('https://yandex.ru/maps/?text=Москва, Красная площадь', '_blank');
-            });
-        }
-    </script>
+</section>
 
 <?= $this->endSection() ?>
