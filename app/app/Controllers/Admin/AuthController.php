@@ -16,6 +16,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Libraries\LoginThrottler;
 use App\Models\NUsersModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use ReflectionException;
@@ -103,15 +104,17 @@ class AuthController extends BaseController
 
         // Проверяем, что оба поля заполнены
         if (empty($login) || empty($password)) {
-            // Возвращаем ошибку с сохранением введенных данных
             return redirect()->back()
                 ->with('error', 'Пожалуйста, заполните все поля')
                 ->withInput();
         }
 
-        // ============================================================
-        // Шаг 3: Поиск пользователя в базе данных
-        // ============================================================
+        $throttler = new LoginThrottler();
+        if ($throttler->isLocked($this->request)) {
+            return redirect()->back()
+                ->with('error', $throttler->lockoutMessage())
+                ->withInput();
+        }
 
         /**
          * Поиск активного пользователя по логину или email
@@ -137,17 +140,18 @@ class AuthController extends BaseController
             // 4.1: Создание сессии пользователя
             // --------------------------------------------------------
 
+            session()->regenerate(true);
+
             $sessionData = [
-                'user_id'       => $user['id'],          // ID пользователя
-                'user_login'    => $user['login'],       // Логин
-                'user_name'     => $user['name'],        // Имя пользователя
-                'user_type'     => $user['type'],        // Тип (0-обычный,1-админ)
-                'user_email'    => $user['email'],       // Email
-                'is_logged_in'  => true,                 // Флаг авторизации
-                'logged_in_at'  => date('Y-m-d H:i:s')   // Время входа
+                'user_id'       => $user['id'],
+                'user_login'    => $user['login'],
+                'user_name'     => $user['name'],
+                'user_type'     => $user['type'],
+                'user_email'    => $user['email'],
+                'is_logged_in'  => true,
+                'logged_in_at'  => date('Y-m-d H:i:s')
             ];
 
-            // Сохраняем данные в сессию
             session()->set($sessionData);
 
             // --------------------------------------------------------
@@ -155,28 +159,19 @@ class AuthController extends BaseController
             // --------------------------------------------------------
 
             $updateData = [
-                'modify'         => date('Y-m-d H:i:s'),     // Время изменения
-                'modify_by_user' => $user['id']              // Кто изменил (сам пользователь)
+                'modify'         => date('Y-m-d H:i:s'),
+                'modify_by_user' => $user['id']
             ];
 
-            // Обновляем запись в базе данных
             $this->userModel->update($user['id'], $updateData);
 
-            // --------------------------------------------------------
-            // 4.3: Логирование успешного входа
-            // --------------------------------------------------------
+            $throttler->clear($this->request);
 
-            /**
-             * Записываем в лог информацию об успешной авторизации
-             *
-             * @see https://codeigniter.com/user_guide/general/logging.html
-             */
             log_message('info', '[AUTH] Пользователь "{login}" (ID: {id}) успешно вошел в систему', [
                 'login' => $user['login'],
                 'id'    => $user['id']
             ]);
 
-            // Перенаправляем в панель управления (без уведомления)
             return redirect()->to('/admin-panel/dashboard');
         }
 
@@ -184,19 +179,16 @@ class AuthController extends BaseController
         // Шаг 5: Обработка неудачной попытки входа
         // ============================================================
 
-        /**
-         * Записываем в лог предупреждение о неудачной попытке
-         * Это помогает отслеживать подбор паролей
-         */
+        $throttler->recordFailure($this->request);
+
         log_message('warning', '[AUTH] Неудачная попытка входа для логина/email: {login} с IP: {ip}', [
             'login' => $login,
             'ip'    => $this->request->getIPAddress()
         ]);
 
-        // Возвращаем на страницу входа с сообщением об ошибке
         return redirect()->back()
             ->with('error', 'Неверный логин или пароль')
-            ->withInput();  // Сохраняем введенный логин для удобства пользователя
+            ->withInput();
     }
 
     /**
@@ -205,7 +197,7 @@ class AuthController extends BaseController
      * Завершает сессию пользователя, очищает все данные
      * и перенаправляет на страницу входа.
      *
-     * @route GET /admin-panel/logout
+     * @route POST /admin-panel/logout
      *
      * @return RedirectResponse Редирект на страницу входа
      */

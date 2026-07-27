@@ -373,7 +373,7 @@ class PagesController extends BaseController
     /**
      * Переключение статуса публикации страницы
      *
-     * @route GET /admin-panel/pages/toggle/{id}
+     * @route POST /admin-panel/pages/toggle/{id}
      *
      * @param int $id ID страницы
      * @return RedirectResponse Редирект назад с сообщением об успехе/ошибке

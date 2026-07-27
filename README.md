@@ -72,7 +72,10 @@ docker compose --env-file .env.prod -f docker-compose.prod.yml exec php php spar
 | PHP 8.2, без xdebug | `php/Dockerfile`, `docker-compose.prod.yml` |
 | Debug Toolbar только в dev | `app/Config/Filters.php` |
 | SecureHeaders в prod | `app/Config/Filters.php` |
-| Rate limit на логин | `LoginThrottleFilter` + nginx |
+| Logout / toggle — только POST + CSRF | routes + admin partials |
+| Rate limit входа (5 / 15 мин) | `LoginThrottler` |
+| MIME-валидация загрузок | `FileHelperTrait::validateUploadedFile` |
+| Запрет PHP в `/uploads/` | nginx configs |
 | HTTPS | `configs/nginx/production.conf` |
 | Сильные пароли | `.env.prod`, `app/.env` |
 | `composer.lock` в git | `app/composer.lock` |

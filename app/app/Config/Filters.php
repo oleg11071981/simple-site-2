@@ -3,7 +3,6 @@
 namespace Config;
 
 use App\Filters\AuthFilter;
-use App\Filters\LoginThrottleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -26,7 +25,6 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'auth'          => AuthFilter::class,
-        'loginThrottle' => LoginThrottleFilter::class,
     ];
 
     public array $required = [

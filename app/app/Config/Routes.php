@@ -8,8 +8,8 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->group('admin-panel', ['namespace' => 'App\Controllers\Admin'], function ($routes) {
     $routes->get('login', 'AuthController::login');
-    $routes->post('auth/authenticate', 'AuthController::authenticate', ['filter' => 'loginThrottle']);
-    $routes->get('logout', 'AuthController::logout');
+    $routes->post('auth/authenticate', 'AuthController::authenticate');
+    $routes->post('logout', 'AuthController::logout', ['filter' => 'auth']);
 
     $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
 
@@ -22,7 +22,7 @@ $routes->group('admin-panel', ['namespace' => 'App\Controllers\Admin'], function
     $routes->get('pages/edit/(:num)', 'PagesController::edit/$1', ['filter' => 'auth']);
     $routes->post('pages/update/(:num)', 'PagesController::update/$1', ['filter' => 'auth']);
     $routes->post('pages/delete/(:num)', 'PagesController::delete/$1', ['filter' => 'auth']);
-    $routes->get('pages/toggle/(:num)', 'PagesController::toggle/$1', ['filter' => 'auth']);
+    $routes->post('pages/toggle/(:num)', 'PagesController::toggle/$1', ['filter' => 'auth']);
     $routes->post('pages/bulk-action', 'PagesController::bulkAction', ['filter' => 'auth']);
 
     $routes->get('files', 'FilesController::index', ['filter' => 'auth']);
