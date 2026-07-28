@@ -25,11 +25,13 @@ Options -Indexes
 	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 	RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
-	# Shared hosting (PHP-FPM): PATH_INFO часто не работает.
-	# Передаём URI через query string: index.php?/segment
+	# Shared hosting (PHP-FPM):
+	# не используем index.php/$1 (PATH_INFO → «No input file specified»)
+	# и не index.php?/$1 (ломает ?query=params через QUERY_STRING)
+	# URI читается из REQUEST_URI, query — из $_GET
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+	RewriteRule ^ index.php [L]
 
 	# Ensure Authorization header is passed along
 	RewriteCond %{HTTP:Authorization} .
