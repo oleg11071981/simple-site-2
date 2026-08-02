@@ -61,13 +61,19 @@ class NSiteModel extends Model
         return $builder->findAll();
     }
 
-    public function getMenuPages(int $parent = 0): array
+    public function getMenuPages(int $parent = 0, int $limit = 0): array
     {
-        return $this->where('publish', 1)
+        $builder = $this->where('publish', 1)
             ->where('show_in_menu', 1)
             ->where('parent', $parent)
             ->orderBy('priority', 'ASC')
-            ->findAll();
+            ->orderBy('create', 'DESC');
+
+        if ($limit > 0) {
+            $builder->limit($limit);
+        }
+
+        return $builder->findAll();
     }
 
     public function getTree(int $parent = 0): array

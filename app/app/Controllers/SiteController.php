@@ -15,7 +15,7 @@ class SiteController extends BaseController
         $sections = [];
         foreach ($this->pagesModel->getMenuPages(0) as $section) {
             $section['full_path'] = $this->pagesModel->getFullPath($section['id']);
-            $children = $this->pagesModel->getMenuPages($section['id']);
+            $children = $this->pagesModel->getMenuPages($section['id'], 5);
             foreach ($children as &$child) {
                 $child['full_path'] = $this->pagesModel->getFullPath($child['id']);
             }

@@ -644,6 +644,10 @@ main > .container {
   .footer-inner {
     flex-direction: column;
     text-align: center;
+    align-items: center;
+  }
+  .footer-links {
+    justify-content: center;
   }
   .docs-grid {
     grid-template-columns: 1fr;
