@@ -27,14 +27,11 @@
     <?php endif; ?>
 
     <?php if (!empty($childrenTree)): ?>
-        <div class="sections-grid" style="margin-bottom: 2rem;">
-            <div class="section-card">
-                <div class="card-header">Подразделы</div>
-                <div class="subsections">
-                    <?php foreach ($childrenTree as $child): ?>
-                        <a href="/<?= esc($child['full_path']) ?>">→ <?= esc($child['name']) ?></a>
-                    <?php endforeach; ?>
-                </div>
+        <div class="section-card page-subsections">
+            <div class="subsections">
+                <?php foreach ($childrenTree as $child): ?>
+                    <a href="/<?= esc($child['full_path']) ?>">→ <?= esc($child['name']) ?></a>
+                <?php endforeach; ?>
             </div>
         </div>
     <?php endif; ?>

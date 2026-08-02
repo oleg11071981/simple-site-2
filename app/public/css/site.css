@@ -252,6 +252,11 @@ main > .container {
   text-decoration: underline;
 }
 
+.page-subsections {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
 /* ========== ПОДВАЛ ========== */
 .footer {
   background: #f90;

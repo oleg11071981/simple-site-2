@@ -99,7 +99,7 @@ class NSiteModel extends Model
         $pages = $this->where('parent', $parent)
             ->where('publish', 1)
             ->orderBy('priority', 'ASC')
-            ->orderBy('name', 'ASC')
+            ->orderBy('create', 'DESC')
             ->findAll();
 
         foreach ($pages as &$page) {
