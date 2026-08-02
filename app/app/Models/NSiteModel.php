@@ -61,13 +61,16 @@ class NSiteModel extends Model
         return $builder->findAll();
     }
 
-    public function getMenuPages(int $parent = 0, int $limit = 0): array
+    public function getMenuPages(int $parent = 0, int $limit = 0, bool $newestFirst = false): array
     {
         $builder = $this->where('publish', 1)
             ->where('show_in_menu', 1)
             ->where('parent', $parent)
-            ->orderBy('priority', 'ASC')
-            ->orderBy('create', 'DESC');
+            ->orderBy('priority', 'ASC');
+
+        if ($newestFirst) {
+            $builder->orderBy('create', 'DESC');
+        }
 
         if ($limit > 0) {
             $builder->limit($limit);
