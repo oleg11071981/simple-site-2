@@ -26,8 +26,19 @@ trait FileHelperTrait
         'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
         'xls'  => ['application/vnd.ms-excel'],
         'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-        'zip'  => ['application/zip', 'application/x-zip-compressed'],
-        'rar'  => ['application/vnd.rar', 'application/x-rar-compressed'],
+        'zip'  => [
+            'application/zip',
+            'application/x-zip',
+            'application/x-zip-compressed',
+            'application/octet-stream',
+            'multipart/x-zip',
+        ],
+        'rar'  => [
+            'application/vnd.rar',
+            'application/x-rar',
+            'application/x-rar-compressed',
+            'application/octet-stream',
+        ],
         'txt'  => ['text/plain'],
     ];
 

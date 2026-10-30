@@ -58,7 +58,7 @@ class FilesController extends BaseController
     /**
      * Типы файлов, считающиеся документами
      */
-    private const DOCUMENT_TYPES = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt'];
+    private const DOCUMENT_TYPES = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'zip', 'rar'];
 
     /**
      * Конструктор контроллера

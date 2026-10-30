@@ -173,7 +173,7 @@
                     <div class="form-group">
                         <label for="userfile">Выберите файл <span class="required">*</span></label>
                         <input type="file" id="userfile" name="userfile" class="form-control" required>
-                        <small>Поддерживаемые форматы: JPG, PNG, GIF, PDF, DOC, XLS, ZIP</small>
+                        <small>Поддерживаемые форматы: JPG, PNG, GIF, PDF, DOC, DOCX, XLS, XLSX, TXT, ZIP, RAR</small>
                     </div>
                 <?php endif; ?>
 
