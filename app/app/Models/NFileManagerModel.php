@@ -96,7 +96,7 @@ class NFileManagerModel extends Model
 
         return $this->where('category', $categoryId)
             ->orderBy('priority', 'ASC')
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'ASC')
             ->findAll();
     }
 
